@@ -1,0 +1,9 @@
+cbonsai
+dotnet-sdk-bin
+libinput-gestures
+nitch
+papirus-folders
+quickshell-git
+themix-full-git
+vesktop-bin
+visual-studio-code-bin
