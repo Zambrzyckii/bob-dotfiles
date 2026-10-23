@@ -47,7 +47,7 @@ install_configs() {
 pkill quickshell; nohup quickshell &>/dev/null &' > ~/.local/bin/start-quickshell.sh
   chmod +x ~/.local/bin/start-quickshell.sh
 
-  grep -rl '/home/harman' ~/.config/hypr ~/.config/waybar ~/.config/quickshell 2>/dev/null | xargs -r sed -i "s|/home/harman|$HOME|g"
+  grep -rl '/home/bob' ~/.config/hypr ~/.config/waybar ~/.config/quickshell ~/.config/scripts ~/.config/fastfetch ~/.zshrc 2>/dev/null | xargs -r sed -i "s|/home/bob|$HOME|g"
 
   chmod +x ~/.config/scripts/* 2>/dev/null
 }
