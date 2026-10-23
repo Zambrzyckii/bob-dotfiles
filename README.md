@@ -79,10 +79,10 @@ A few things to check on a new machine.
 | Clipboard and screenshots | `wl-clipboard`, `cliphist`, `wofi`, `grim`, `slurp` |
 | Script helpers | `jq`, `ripgrep`, `chafa` |
 | Shell | `zsh`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `bat`, `eza`, `fastfetch` |
-| Apps behind keybindings | `firefox`, `btop`, `asciiquarium`, `cmatrix`, `neovim`, `lazygit` |
+| Apps started from keybindings or Waybar | `firefox`, `btop`, `asciiquarium`, `cmatrix`, `neovim`, `lazygit` |
 | Other | `gnuplot` |
 
-`pkglist.txt` and `aurlist.txt` are package snapshots from another machine. `install.sh` does not read them.
+`pkglist.txt` and `aurlist.txt` are package lists that `install.sh` does not read.
 
 ## Keybindings
 
