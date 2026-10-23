@@ -6,15 +6,15 @@ cd "$(dirname "$0")"
 [[ ! -d .config ]] && echo "cant find .config" && exit 1
 
 install_deps() {
-  sudo pacman -S --needed hyprland hyprlock hypridle kitty thunar waybar swww swaync cava fastfetch starship python-pywal kdeconnect grim slurp mpd mpc gnuplot ttf-jetbrains-mono-nerd alsa-utils networkmanager bluez bluez-utils wireplumber brightnessctl playerctl imagemagick || exit 1
+  sudo pacman -S --needed hyprland hyprlock hypridle kitty thunar waybar awww swaync cava fastfetch starship kdeconnect grim slurp mpd mpc gnuplot ttf-jetbrains-mono-nerd alsa-utils networkmanager bluez bluez-utils wireplumber brightnessctl playerctl imagemagick quickshell qt6-5compat gpu-screen-recorder rmpc mpd-mpris wl-clipboard cliphist wofi jq chafa ripgrep xorg-xrdb pacman-contrib zsh zsh-autosuggestions zsh-syntax-highlighting bat eza firefox btop asciiquarium cmatrix neovim lazygit || exit 1
 
   if command -v yay &>/dev/null; then
-    yay -S --needed gpu-screen-recorder rmpc mpd-mpris quickshell-git
+    yay -S --needed python-pywal
   elif command -v paru &>/dev/null; then
-    paru -S --needed gpu-screen-recorder rmpc mpd-mpris quickshell-git
+    paru -S --needed python-pywal
   else
     echo "no aur helper, skipping aur packages"
-    echo "run: yay -S gpu-screen-recorder rmpc mpd-mpris quickshell-git pokemon-colorscripts-go"
+    echo "run: yay -S python-pywal"
   fi
 
   sudo systemctl enable --now NetworkManager 2>/dev/null
