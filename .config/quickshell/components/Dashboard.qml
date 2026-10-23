@@ -8,6 +8,7 @@ import Qt5Compat.GraphicalEffects
 
 PanelWindow {
     id: dashboard
+    screen: Quickshell.screens.find(s => s.name === "DP-3")	
     visible: true
     exclusionMode: ExclusionMode.Ignore
     anchors { top: true; bottom: true; right: true }
@@ -22,7 +23,6 @@ PanelWindow {
     property int tempVal: 0
     property int ramVal: 0
     property int diskVal: 0
-    property int batVal: 100
     property int volVal: 50
     property int brightVal: 100
     property int updateVal: 0
@@ -332,42 +332,6 @@ PanelWindow {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 70
-                    color: Qt.rgba(0, 0, 0, 0.3)
-                    radius: 15
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: 15
-                        spacing: 15
-                        Text {
-                            id: batIcon
-                            text: "󰁹"
-                            color: root.walColor2
-                            font.pixelSize: 32
-                            font.family: "JetBrainsMono Nerd Font"
-                        }
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            spacing: 3
-                            Text {
-                                text: "Battery " + dashboard.batVal + "%"
-                                color: root.walForeground
-                                font.pixelSize: 18
-                                font.family: "JetBrainsMono Nerd Font"
-                            }
-                            Text {
-                                id: batStatus
-                                text: "Checking..."
-                                color: root.walColor8
-                                font.pixelSize: 12
-                                font.family: "JetBrainsMono Nerd Font"
-                            }
-                        }
-                    }
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
                     Layout.preferredHeight: 140
                     color: Qt.rgba(0, 0, 0, 0.3)
                     radius: 15
@@ -446,8 +410,8 @@ PanelWindow {
                                         }
                                     }
                                 }
-                                Process { id: volSetProc }
                             }
+                            Process { id: volSetProc }
                             Text {
                                 width: 40
                                 text: dashboard.volVal + "%"
@@ -505,8 +469,8 @@ PanelWindow {
                                         }
                                     }
                                 }
-                                Process { id: brightSetProc }
                             }
+                            Process { id: brightSetProc }
                             Text {
                                 width: 40
                                 text: dashboard.brightVal + "%"
@@ -837,8 +801,6 @@ PanelWindow {
             if (!tempProc.running) tempProc.running = true
             if (!ramProc.running) ramProc.running = true
             if (!diskProc.running) diskProc.running = true
-            if (!batProc.running) batProc.running = true
-            if (!batStatusProc.running) batStatusProc.running = true
             if (!volProc.running) volProc.running = true
             if (!brightProc.running) brightProc.running = true
             if (!uptimeProc.running) uptimeProc.running = true
@@ -847,45 +809,21 @@ PanelWindow {
         }
     }
 
-    Process { id: cpuProc; command: ["bash", "-c", "top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}'"]; stdout: SplitParser { onRead: data => dashboard.cpuVal = parseInt(data) || 0 } }
+    Process { id: cpuProc; command: ["bash", "-c", "LC_ALL=C top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}'"]; stdout: SplitParser { onRead: data => dashboard.cpuVal = parseInt(data) || 0 } }
     Process { 
         id: tempProc; 
-        command: ["bash", "-c", "t=$(sensors 2>/dev/null | awk '/(Tctl|Package id 0|Core 0)/ {print $2}' | tr -d '+°C' | head -n1 | awk '{print int($1)}'); [ -z \"$t\" ] && t=$(cat /sys/class/thermal/thermal_zone*/temp 2>/dev/null | sort -nr | head -n1 | awk '{print int($1/1000)}'); echo ${t:-0}"]
+        command: ["bash", "-c", "t=$(LC_ALL=C sensors 2>/dev/null | awk '/Package id 0/ {print $4} /Tctl/ {print $2} /Core 0/ {print $3}' | tr -d '+°C' | head -n1 | awk '{print int($1)}'); [ -z \"$t\" ] && t=$(cat /sys/class/thermal/thermal_zone*/temp 2>/dev/null | sort -nr | head -n1 | awk '{print int($1/1000)}'); echo ${t:-0}"]
         stdout: SplitParser { onRead: data => dashboard.tempVal = parseInt(data) || 0 } 
     }
-    Process { id: ramProc; command: ["bash", "-c", "free | awk '/Mem:/ {printf \"%.0f\", $3/$2*100}'"]; stdout: SplitParser { onRead: data => dashboard.ramVal = parseInt(data) || 0 } }
-    Process { id: diskProc; command: ["bash", "-c", "df / | awk 'NR==2 {gsub(/%/,\"\"); print $5}'"]; stdout: SplitParser { onRead: data => dashboard.diskVal = parseInt(data) || 0 } }
-    Process { 
-        id: batProc; command: ["bash", "-c", "cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 100"]
-        stdout: SplitParser { onRead: data => { dashboard.batVal = parseInt(data) || 100 } }
-    }
-    Process {
-        id: batStatusProc
-        command: ["bash", "-c", "upower -i $(upower -e | grep 'BAT') | grep -E 'state|time to' | awk -F': +' '{print $2}' | xargs echo"]
-        stdout: SplitParser {
-            onRead: data => {
-                var output = data.trim().split(" ");
-                var status = output[0];
-                var timeStr = (output.length >= 3) ? output[1] + " " + output[2] : "";
-                var cap = dashboard.batVal;
-                if (status === "charging") {
-                    batStatus.text = "Charging" + (timeStr ? " (" + timeStr + " to full)" : "");
-                    batIcon.text = "󰂄"; batIcon.color = root.walColor2;
-                } else {
-                    if (cap >= 90) batIcon.text = "󰁹"; else if (cap >= 80) batIcon.text = "󰂂"; else if (cap >= 70) batIcon.text = "󰂁"; else if (cap >= 60) batIcon.text = "󰂀"; else if (cap >= 50) batIcon.text = "󰁿"; else if (cap >= 40) batIcon.text = "󰁾"; else if (cap >= 30) batIcon.text = "󰁽"; else if (cap >= 20) batIcon.text = "󰁼"; else if (cap >= 10) batIcon.text = "󰁻"; else batIcon.text = "󰁺";
-                    if (status === "fully-charged" || status === "full") batStatus.text = "Fully charged";
-                    else batStatus.text = "Discharging" + (timeStr ? " (" + timeStr + " left)" : "");
-                }
-            }
-        }
-    }
-    Process { id: volProc; command: ["bash", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%.0f\", $2*100}'"]; stdout: SplitParser { onRead: data => dashboard.volVal = parseInt(data) || 0 } }
-    Process { id: brightProc; command: ["bash", "-c", "brightnessctl -m | awk -F, '{gsub(/%/,\"\"); print $4}'"]; stdout: SplitParser { onRead: data => dashboard.brightVal = parseInt(data) || 100 } }
-    Process { id: uptimeProc; command: ["bash", "-c", "uptime -p"]; stdout: SplitParser { onRead: data => uptimeText.text = data.trim() } }
+    Process { id: ramProc; command: ["bash", "-c", "LC_ALL=C free | awk '/Mem:/ {printf \"%.0f\", $3/$2*100}'"]; stdout: SplitParser { onRead: data => dashboard.ramVal = parseInt(data) || 0 } }
+    Process { id: diskProc; command: ["bash", "-c", "LC_ALL=C df / | awk 'NR==2 {gsub(/%/,\"\"); print $5}'"]; stdout: SplitParser { onRead: data => dashboard.diskVal = parseInt(data) || 0 } }
+    Process { id: volProc; command: ["bash", "-c", "LC_ALL=C wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%.0f\", $2*100}'"]; stdout: SplitParser { onRead: data => dashboard.volVal = parseInt(data) || 0 } }
+    Process { id: brightProc; command: ["bash", "-c", "LC_ALL=C brightnessctl -m | awk -F, '{gsub(/%/,\"\"); print $4}'"]; stdout: SplitParser { onRead: data => dashboard.brightVal = parseInt(data) || 100 } }
+    Process { id: uptimeProc; command: ["bash", "-c", "LC_ALL=C uptime -p"]; stdout: SplitParser { onRead: data => uptimeText.text = data.trim() } }
     Process { id: updateProc; command: ["bash", "-c", "core=$(checkupdates 2>/dev/null | wc -l); aur=$(yay -Qua 2>/dev/null | wc -l); echo $((core + aur))"]; stdout: SplitParser { onRead: data => { dashboard.updateVal = parseInt(data.trim()) || 0; } } }
     Process {
         id: netProc
-        command: ["bash", "-c", "IFACE=$(ip route | awk '/default/ {print $5}' | head -n1); if [ -z \"$IFACE\" ]; then echo \"0 KB/s|0 KB/s\"; exit; fi; R1=$(cat /sys/class/net/$IFACE/statistics/rx_bytes); T1=$(cat /sys/class/net/$IFACE/statistics/tx_bytes); sleep 1; R2=$(cat /sys/class/net/$IFACE/statistics/rx_bytes); T2=$(cat /sys/class/net/$IFACE/statistics/tx_bytes); RB=$((R2-R1)); TB=$((T2-T1)); awk -v r=$RB -v t=$TB 'BEGIN { if (r < 1024) printf \"0 KB/s|\"; else if (r < 1048576) printf \"%.0f KB/s|\", r/1024; else printf \"%.1f MB/s|\", r/1048576; if (t < 1024) printf \"0 KB/s\"; else if (t < 1048576) printf \"%.0f KB/s\", t/1024; else printf \"%.1f MB/s\", t/1048576; }'"]
+        command: ["bash", "-c", "IFACE=$(LC_ALL=C ip route | awk '/default/ {print $5}' | head -n1); if [ -z \"$IFACE\" ]; then echo \"0 KB/s|0 KB/s\"; exit; fi; R1=$(cat /sys/class/net/$IFACE/statistics/rx_bytes); T1=$(cat /sys/class/net/$IFACE/statistics/tx_bytes); sleep 1; R2=$(cat /sys/class/net/$IFACE/statistics/rx_bytes); T2=$(cat /sys/class/net/$IFACE/statistics/tx_bytes); RB=$((R2-R1)); TB=$((T2-T1)); awk -v r=$RB -v t=$TB 'BEGIN { if (r < 1024) printf \"0 KB/s|\"; else if (r < 1048576) printf \"%.0f KB/s|\", r/1024; else printf \"%.1f MB/s|\", r/1048576; if (t < 1024) printf \"0 KB/s\"; else if (t < 1048576) printf \"%.0f KB/s\", t/1024; else printf \"%.1f MB/s\", t/1048576; }'"]
         stdout: SplitParser { onRead: d => { let p = d.trim().split("|"); if(p.length === 2) { dashboard.netDown = p[0]; dashboard.netUp = p[1]; } } }
     }
 }

@@ -8,6 +8,7 @@ import Qt5Compat.GraphicalEffects
 
 PanelWindow {
     id: musicPanel
+    screen: Quickshell.screens.find(s => s.name === "DP-3")
     visible: true
     exclusionMode: ExclusionMode.Ignore
     anchors { top: true; left: true; right: true }
@@ -28,6 +29,7 @@ PanelWindow {
     property real lastPosition: 0
     property real length: 0
     property bool hasTrack: playerStatus === "Playing" || playerStatus === "Paused"
+    property bool hasLength: length > 0
     property var gifFiles: []
     property int currentGifIndex: root.savedGifIndex
     property int previewGifIndex: 0
@@ -214,7 +216,7 @@ PanelWindow {
                             visible: musicPanel.hasTrack
 
                             Text {
-                                text: musicPanel.formatTime(musicPanel.position)
+                                text: musicPanel.hasLength ? musicPanel.formatTime(musicPanel.position) : "--:--"
                                 color: root.walColor8
                                 font.pixelSize: 10
                                 font.family: "JetBrainsMono Nerd Font"
@@ -227,7 +229,7 @@ PanelWindow {
                                 color: Qt.rgba(0, 0, 0, 0.3)
 
                                 Rectangle {
-                                    width: musicPanel.length > 0 ? parent.width * (musicPanel.position / musicPanel.length) : 0
+                                    width: musicPanel.hasLength ? parent.width * Math.min(1, Math.max(0, musicPanel.position / musicPanel.length)) : 0
                                     height: parent.height
                                     radius: 2
                                     color: root.walColor5
@@ -235,7 +237,7 @@ PanelWindow {
 
                                 MouseArea {
                                     anchors.fill: parent
-                                    cursorShape: Qt.PointingHandCursor
+                                    cursorShape: musicPanel.hasLength ? Qt.PointingHandCursor : Qt.ArrowCursor
                                     onClicked: function(mouse) {
                                         if (musicPanel.length > 0 && !seekProc.running) {
                                             var seekPos = (mouse.x / parent.width) * musicPanel.length
@@ -247,7 +249,7 @@ PanelWindow {
                             }
 
                             Text {
-                                text: musicPanel.formatTime(musicPanel.length)
+                                text: musicPanel.hasLength ? musicPanel.formatTime(musicPanel.length) : "--:--"
                                 color: root.walColor8
                                 font.pixelSize: 10
                                 font.family: "JetBrainsMono Nerd Font"
@@ -879,8 +881,16 @@ PanelWindow {
 
     Process {
         id: musicLenProc
+        property bool gotLength: false
         command: ["sh", "-c", "playerctl metadata mpris:length 2>/dev/null | awk '{print $1/1000000}'"]
-        stdout: SplitParser { onRead: data => musicPanel.length = parseFloat(data.trim()) || 0 }
+        onStarted: gotLength = false
+        stdout: SplitParser {
+            onRead: data => {
+                musicLenProc.gotLength = true
+                musicPanel.length = parseFloat(data.trim()) || 0
+            }
+        }
+        onExited: { if (!gotLength) musicPanel.length = 0 }
     }
 
     Process {

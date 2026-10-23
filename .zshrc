@@ -233,3 +233,12 @@ GitUp() {
 	echo "Commit done" 
 	
 }
+export PATH=~/.npm-global/bin:$PATH
+
+
+# Load Angular CLI autocompletion.
+(( $+commands[ng] )) && source <(ng completion script)
+
+# kimi-code
+export PATH="/home/bob/.kimi-code/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

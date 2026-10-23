@@ -58,8 +58,8 @@ tooltip {
 }
 
 #custom-apps {
-color: @red;
-font-size: 12px;
+    color: @color1;
+    font-size: 12px;
 }
 
 #custom-apps:hover {
@@ -68,7 +68,7 @@ font-size: 12px;
 }
 
 #clock {
-    color: @blue;
+    color: @color4;
 }
 
 #workspaces {
@@ -85,7 +85,7 @@ font-size: 12px;
 }
 
 #workspaces button.active {
-    background: alpha(@pink, 0.75);
+    background: alpha(@color5, 0.75);
     color: @background;
     padding: 2px 16px;
     border-radius: 16px;
@@ -97,49 +97,49 @@ font-size: 12px;
 }
 
 #workspaces button:hover {
-    background: alpha(@pink, 0.4);
+    background: alpha(@color5, 0.4);
     color: @foreground;
 }
 
 #custom-media {
-    color: @green;
+    color: @color2;
     padding: 3px 14px;
 }
 
 #battery {
-    color: @purple;
+    color: @color5;
     transition: color 0.4s ease;
 }
 
 #battery.charging {
-    color: @green;
+    color: @color2;
 }
 
 #battery.warning {
-    color: @yellow;
+    color: @color3;
 }
 
 #battery.critical {
-    color: @red;
+    color: @color1;
 }
 
 #custom-volume {
-    color: @cyan;
+    color: @color6;
 }
 #backlight {
-	color: @cyan;
+    color: @color6;
 }
 #custom-network {
     color: @foreground;
 }
 
 #custom-git-guard.warning {
-    color: @purple;
+    color: @color5;
     font-weight: bold;
 }
 
 #custom-dashboard {
-    color: @red;
+    color: @color1;
     font-size: 20px;
     transition: all 0.3s ease;
 }
@@ -150,7 +150,7 @@ font-size: 12px;
 }
 
 #custom-recorder {
-    color: @purple;
+    color: @color5;
     font-weight: bold;
     font-size: 13px;
     background: alpha(@background, 0.75);
@@ -158,4 +158,3 @@ font-size: 12px;
     padding: 3px 12px;
     margin: 0px;
 }
-

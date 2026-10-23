@@ -13,7 +13,7 @@
   border-radius: 15px;
   margin: 8px;
   padding: 0;
-  border: 2px solid #2B71F3;
+  border: 2px solid #905C63;
 }
 
 .notification-content {
@@ -23,15 +23,15 @@
 }
 
 .close-button {
-  background: #2B71F3;
-  color: #121c06;
+  background: #905C63;
+  color: #1a1412;
   border-radius: 8px;
   margin: 8px;
   padding: 4px;
 }
 
 .close-button:hover {
-  background: #3E85F2;
+  background: #738460;
 }
 
 .notification-default-action {
@@ -43,18 +43,18 @@
 .summary {
   font-size: 14px;
   font-weight: bold;
-  color: #2B71F3;
+  color: #905C63;
   margin-bottom: 4px;
 }
 
 .body {
   font-size: 12px;
-  color: #cadcf2;
+  color: #c6cfef;
 }
 
 .control-center {
   background: rgba(13, 13, 13, 0.7);
-  border: 2px solid #2B71F3;
+  border: 2px solid #905C63;
   border-radius: 15px;
   margin: 10px;
 }
@@ -65,7 +65,7 @@
 
 .widget-title {
   background: transparent;
-  color: #2B71F3;
+  color: #905C63;
   font-size: 18px;
   font-weight: bold;
   padding: 15px;
@@ -74,8 +74,8 @@
 }
 
 .widget-title > button {
-  background: #2B71F3;
-  color: #121c06;
+  background: #905C63;
+  color: #1a1412;
   border-radius: 8px;
   padding: 8px 15px;
   font-size: 12px;
@@ -83,24 +83,24 @@
 }
 
 .widget-title > button:hover {
-  background: #3E85F2;
+  background: #738460;
 }
 
 .widget-dnd {
   background: transparent;
-  color: #cadcf2;
+  color: #c6cfef;
   padding: 12px;
   margin: 10px;
   border-radius: 10px;
 }
 
 .widget-dnd > switch {
-  background: #8d9aa9;
+  background: #8a90a7;
   border-radius: 12px;
 }
 
 .widget-dnd > switch:checked {
-  background: #2B71F3;
+  background: #905C63;
 }
 
 .blank-window {

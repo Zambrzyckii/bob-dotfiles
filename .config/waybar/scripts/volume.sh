@@ -12,5 +12,5 @@ get_volume() {
 
 while true; do
     get_volume
-    sleep 0.2
+    sleep 0.1
 done

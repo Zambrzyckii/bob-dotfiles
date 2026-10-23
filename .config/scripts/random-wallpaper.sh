@@ -9,7 +9,10 @@ selected_path=$(find "$WALL_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname
 if [ -f "$selected_path" ]; then
   ln -sf "$selected_path" "$CURRENT_WALL"
 
-  swww img "$selected_path" --transition-type any --transition-duration 2 &
+  awww img -o DP-3 --resize crop --transition-type any --transition-duration 2 "$selected_path" &
+  awww img -o HDMI-A-1 --resize crop --transition-type any --transition-duration 2 "$selected_path" &
+  awww img -o DP-1 --resize crop --transition-type any --transition-duration 2 "$selected_path" &
+
   wal -i "$selected_path" -n -q
 
   cp ~/.cache/wal/colors-swaync.css ~/.config/swaync/style.css

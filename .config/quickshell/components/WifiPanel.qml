@@ -7,6 +7,7 @@ import QtQuick.Controls
 
 PanelWindow {
     id: wifiPanel
+    screen: Quickshell.screens.find(s => s.name === "DP-3")
     visible: true
     exclusionMode: ExclusionMode.Ignore
     anchors { top: true; right: true }

@@ -9,6 +9,7 @@ import Qt5Compat.GraphicalEffects
 PanelWindow {
     id: launcherPanel
     visible: true
+    screen: Quickshell.screens.find(s => s.name === "DP-3")
     exclusionMode: ExclusionMode.Ignore
     anchors { top: true; bottom: true; left: true }
     margins { top: 40; bottom: 10; left: root.launcherVisible ? 6 : -450 }
