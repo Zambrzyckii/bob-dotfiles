@@ -14,9 +14,9 @@
 ![](./screenshots/1.png)
 ![](./screenshots/2.png)
 ![](./screenshots/3.png)
-![](./screenshots/4.png)
-![](./screenshots/5.png)
-![](./screenshots/6.png)
+![](./screenshots/4.jpg)
+![](./screenshots/5.jpg)
+![](./screenshots/6.jpg)
 
 <video src="./example.mp4" controls="controls" width="100%"> </video>
 > Credits: ViegPhunt, binnewbs, Mon4sm, Harman1307, r/unixporn
