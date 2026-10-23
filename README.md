@@ -133,4 +133,4 @@ A few things to check on a new machine.
 
 ## License
 
-This repository has no license. Most files come from [Harman1307/dotfiles-Hyprland](https://github.com/Harman1307/dotfiles-Hyprland), which has no license either. The wallpapers, GIFs, avatars and fastfetch logos belong to their respective artists. Files from [cava](https://github.com/karlstav/cava) and [monasm-dots](https://github.com/Mon4sm/monasm-dots) are under the MIT license, and their notices are in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+This repository has no license. Most files come from [Harman1307/dotfiles-Hyprland](https://github.com/Harman1307/dotfiles-Hyprland), which has no license either. The wallpapers, GIFs, avatars and fastfetch logos belong to their respective artists. Files from [cava](https://github.com/karlstav/cava) and [monasm-dots](https://github.com/Mon4sm/monasm-dots) are under the MIT license, and their notices are in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). The exception is `.config/cava/shaders/eye_of_phi.frag`. Its header credits the Shadertoy user ChunderFPV, so the cava license does not cover it.

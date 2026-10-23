@@ -7,6 +7,7 @@ This repository includes material from the projects below. Their licenses apply 
 - Source: https://github.com/karlstav/cava
 - Used in: `.config/cava/shaders/`, `.config/cava/themes/`
 - License: MIT
+- Not covered: `.config/cava/shaders/eye_of_phi.frag`, whose header credits the Shadertoy user ChunderFPV
 
 ```text
 Copyright (c) 2015 Karl Stavestrand <karl@stavestrand.no>
