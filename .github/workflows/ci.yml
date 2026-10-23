@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: Shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: command -v shellcheck || (sudo apt-get update && sudo apt-get install -y shellcheck)
+      - run: >-
+          shellcheck -S error
+          install.sh
+          .config/scripts/GifScript.sh
+          .config/scripts/GitGuard.sh
+          .config/scripts/Music.sh
+          .config/scripts/backup.sh
+          .config/scripts/cliphist.sh
+          .config/scripts/define.sh
+          .config/scripts/random-wallpaper.sh
+          .config/scripts/recording.sh
+          .config/scripts/sysclean
+          .config/scripts/temp.sh
+          .config/scripts/thunar_theme.sh
+          .config/waybar/launch.sh
+          .config/waybar/scripts/network.sh
+          .config/waybar/scripts/updates.sh
+          .config/waybar/scripts/volume.sh
