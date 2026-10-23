@@ -22,7 +22,7 @@ install_deps() {
 }
 
 install_configs() {
-  mkdir -p ~/.config ~/.local/bin ~/wallpapers
+  mkdir -p ~/.config ~/.local/bin ~/wallpapers ~/screenshots ~/screen-recordings ~/bobby-dotfiles
 
   backup=~/.dotfiles-backup-$(date +%s)
   mkdir -p "$backup"
@@ -35,7 +35,13 @@ install_configs() {
   [[ -e ~/.config/starship.toml ]] && mv ~/.config/starship.toml "$backup"/
   cp .config/starship.toml ~/.config/
 
-  [[ -d wallpapers ]] && cp -n wallpapers/* ~/wallpapers/ 2>/dev/null
+  for file in .zshrc .Xresources; do
+    [[ -e ~/"$file" ]] && mv ~/"$file" "$backup"/
+    cp "$file" ~/
+  done
+
+  [[ -d wallpapers ]] && cp -n wallpapers/* wallpapers/.current-blurred.jpg ~/wallpapers/ 2>/dev/null
+  cp -rn Gif FastFetchLogos ~/bobby-dotfiles/
 
   echo '#!/bin/bash
 pkill quickshell; nohup quickshell &>/dev/null &' > ~/.local/bin/start-quickshell.sh
