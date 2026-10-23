@@ -6,8 +6,8 @@
 | **App Launcher** | Quickshell |
 | **Lockscreen** | Hyprlock |
 | **Notifications** | SwayNC |
-| **Wallpapers** | swww + pywal |
-| **Bar** | Quickshell |
+| **Wallpapers** | awww + pywal |
+| **Bar** | Waybar |
 
 ## Screenshots
 
