@@ -6,9 +6,13 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 HISTFILE=~/.zhistory
+if [[ -f $HISTFILE ]] && LC_ALL=C command grep -qaP '\x00' $HISTFILE; then
+    ( umask 077 && LC_ALL=C command tr -d '\000' < $HISTFILE > $HISTFILE.$$ ) && command mv -f $HISTFILE.$$ $HISTFILE
+fi
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
+setopt incappendhistory
 
 export DOTNET_SYSTEM_NET_DISABLEIPV6=1
 alias cat='bat'
